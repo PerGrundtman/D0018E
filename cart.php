@@ -1,9 +1,6 @@
 <!DOCTYPE>
 
 <?php
-//to make each session unique and we save all variables into this specific session like quantity and stuff
-session_start();
-
 include ("functions/functions.php"); //include the functions.php library we created
 ?>
 
@@ -135,34 +132,17 @@ include ("functions/functions.php"); //include the functions.php library we crea
 						?>
 						
 						<tr align="center">
-							<td><input type="checkbox" name="remove[]" value="<?php echo $pro_id ?>"/></td>
+							<td><input type="checkbox" name="remove[]"/></td>
 							<td><?php echo $product_title; ?><br>
 							<img src="admin_area/product_images/<?php echo $product_image;?>" width="60" height="60"/>
 
 							</td>
-							<td> <input type="text" size="4" name="qty" value="<?php echo $_SESSION['qty']; ?>"/></td>
-							
-							<?php 
-							
-							function updatecart(){
-								
-								global $con;
-							
-								if(isset($_POST['update_cart'])){
-									$qty = $_POST['qty'];
-									$update_qty = "update cart set qty='$qty'";
-									$run_qty = mysqli_query($con, $update_qty);
-									//we target the qty field inside the table
-									$_SESSION['qty']=$qty;
-									//default array superglobal array
-									$total = $total*$qty;
-									
-								}
-							?>
-							
+							<td> <input type="text" size="4" name="qty"</td>
 							<td> <?php echo "$" . $single_price ?></td>
 						</tr>
-					
+						
+						
+						
 						
 							<?php 
 								}
@@ -172,40 +152,9 @@ include ("functions/functions.php"); //include the functions.php library we crea
 							<td colspan="4"> <b>Sub Total: </b></td>
 							<td> <?php echo "$" . $total; ?> </td>
 						</tr>
-							<tr align="center">
-								<td colspan="2"> <input type="submit" name="update_cart" value="Update_Cart" /> </td>
-								<td> <input type="submit" name="continue" value="Continue Shopping" / </td>
-								<td> <button><a href = "checkout.php" style="text-decoration:none; color: black;"> Checkout</a> </button></td>
-							</tr>
+							
 						</table>
 					</form>
-					<?php
-					$ip = getIp();
-					//the remove button is boxed and we want to update the cart.
-					//Running a loop, input target is 'remove', make it remove local var $remove_id
-						if(isset($_POST['update_cart'])){
-							//we get the values from the remove fields and put it into local var $remove_id (remove is an array so need to loop through it)
-							//and we make an SQL query to delete from cart table where p_id = $remove_id 
-							//so the specific product from the specific user will be removed from the cart
-							foreach($_POST['remove'] as $remove_id){
-								$delete_product = "DELETE FROM cart WHERE p_id ='$remove_id' AND ip_add='$ip'";
-								$run_delete = mysqli_query($con, $delete_product);
-								if($run_delete){
-									echo "<script>window.open('cart.php', '_self')</script>";
-								}
-							}
-						}
-						if(isset($_POST['continue'])){
-							
-							echo "<script>window.open('index.php', '_self')</script>";
-						}
-						//if this function is not active or not working, it will not generate an error
-						//'@', cuz if you push update and there is no value given, it should not crash
-						echo @$up_cart = updatecart();
-						}
-					?>
-					
-					
 				</div>
 			</div>
 		</div>
@@ -219,7 +168,6 @@ include ("functions/functions.php"); //include the functions.php library we crea
 		</div>
 	</div>
 	<!-- Main Container ends here -->
-
-	<!-- asdasdasdasdasd -->	
+		
 </body>
 </html>
