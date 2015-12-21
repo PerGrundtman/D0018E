@@ -140,9 +140,7 @@ include ("functions/functions.php"); //include the functions.php library we crea
 							<td> <input type="text" size="4" name="qty"</td>
 							<td> <?php echo "$" . $single_price ?></td>
 						</tr>
-						
-						
-						
+					
 						
 							<?php 
 								}
