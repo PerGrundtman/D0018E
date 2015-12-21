@@ -1,6 +1,9 @@
 <!DOCTYPE>
 
 <?php
+//to make each session unique and we save all variables into this specific session like quantity and stuff
+session_start();
+
 include ("functions/functions.php"); //include the functions.php library we created
 ?>
 
@@ -137,7 +140,26 @@ include ("functions/functions.php"); //include the functions.php library we crea
 							<img src="admin_area/product_images/<?php echo $product_image;?>" width="60" height="60"/>
 
 							</td>
-							<td> <input type="text" size="4" name="qty"</td>
+							<td> <input type="text" size="4" name="qty" value="<?php echo $_SESSION['qty']; ?>"/></td>
+							
+							<?php 
+							
+							function updatecart(){
+								
+								global $con;
+							
+								if(isset($_POST['update_cart'])){
+									$qty = $_POST['qty'];
+									$update_qty = "update cart set qty='$qty'";
+									$run_qty = mysqli_query($con, $update_qty);
+									//we target the qty field inside the table
+									$_SESSION['qty']=$qty;
+									//default array superglobal array
+									$total = $total*$qty;
+									
+								}
+							?>
+							
 							<td> <?php echo "$" . $single_price ?></td>
 						</tr>
 					
@@ -176,6 +198,10 @@ include ("functions/functions.php"); //include the functions.php library we crea
 						if(isset($_POST['continue'])){
 							
 							echo "<script>window.open('index.php', '_self')</script>";
+						}
+						//if this function is not active or not working, it will not generate an error
+						//'@', cuz if you push update and there is no value given, it should not crash
+						echo @$up_cart = updatecart();
 						}
 					?>
 					
