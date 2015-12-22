@@ -1,6 +1,10 @@
 <!DOCTYPE>
 
 <?php
+//Session variables hold information about one single user, and are available to all pages in one application, until the browser
+// has been closed.
+//this session_start() function needs to called here ( before any HTML tag )
+session_start(); 
 include ("functions/functions.php"); //include the functions.php library we created
 ?>
 
@@ -137,7 +141,21 @@ include ("functions/functions.php"); //include the functions.php library we crea
 							<img src="admin_area/product_images/<?php echo $product_image;?>" width="60" height="60"/>
 
 							</td>
-							<td> <input type="text" size="4" name="qty"</td>
+							<td> <input type="text" size="4" name="qty" value="<?php echo $_SESSION['qty']; ?>"/></td>
+							
+							<?php 
+							if(isset($_POST['update_cart'])){
+								$qty = $_POST['qty'];
+								$total = $total* $qty;
+								$update_qty = "UPDATE cart SET qty='$qty'";
+								$run_qty = mysqli_query($con, $update_qty);
+								
+								$_SESSION['qty'] = $qty; 
+								
+								
+							}
+							?>
+							
 							<td> <?php echo "$" . $single_price ?></td>
 						</tr>
 						
@@ -164,22 +182,27 @@ include ("functions/functions.php"); //include the functions.php library we crea
 					
 					
 					<?php 
-					$ip = getip();
-					global $con;
-					 if(isset($_POST['update_cart'])){
-						 foreach($_POST['remove'] as $remove_id){
+					function updatecart(){
+						$ip = getip();
+						global $con;
+						if(isset($_POST['update_cart'])){
+							foreach($_POST['remove'] as $remove_id){
 							 
 							 $delete_product = "DELETE FROM cart WHERE p_id ='$remove_id' AND ip_add='$ip'";
 							 $run_delete = mysqli_query($con, $delete_product);
 							 
 							 if($run_delete){
+								 //refresh the page
 								 echo "<script> window.open('cart.php', '_self')</script>";
 							 }
 						 }
 					 }
 					 if (isset($_POST['continue'])){
 						 echo "<script> window.open('index.php', '_self')</script>";
-					 }
+						}
+						//@ - if the function is not called or does not work; no error is thrown
+						
+					 } echo @$up_cart = updatecart();
 					?>
 					
 				</div>
