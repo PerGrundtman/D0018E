@@ -12,6 +12,10 @@ $con = new mysqli($host, $user, $password, $dbname, $port, $socket)
 //$con->close();
 //TODO: Try if the $con can be made global ONLY ONCE instead of in each function
 
+//Start a new session here if a session has not been started yet.
+if(!isset($_SESSION)){
+	session_start();
+}
 function getIp() {
 	//getting the user IP address
     $ip = $_SERVER['REMOTE_ADDR'];
@@ -35,18 +39,19 @@ function getIp() {
 }
 //Creating the shopping cart
 function cart(){
+	$session = session_id();
 	//if someone clicks the add cart button
 	if(isset($_GET['add_cart'])){
 		
 		global $con;
 		
-		$ip = getIp();
 		
-		//get the IP from the 
+		
+		//get the product ID  of the added product
 		$pro_id = $_GET['add_cart'];
 		
 		//check if this product was already added by this user
-		$check_pro = "SELECT * FROM cart WHERE ip_add='$ip' AND p_id='$pro_id' ";
+		$check_pro = "SELECT * FROM cart WHERE session_id='$session' AND p_id='$pro_id' ";
 		
 		$run_check = mysqli_query($con, $check_pro);
 		
@@ -58,7 +63,7 @@ function cart(){
 		//Else...
 		else{
 			
-			$insert_pro = "INSERT into cart (p_id, ip_add) values ('$pro_id', '$ip') ";
+			$insert_pro = "INSERT into cart (p_id, session_id) values ('$pro_id', '$session') ";
 			
 			$run_pro = mysqli_query($con, $insert_pro);
 			
@@ -72,22 +77,19 @@ function cart(){
 //TODO: check if/else
 function total_items(){
 	global $con;
+	$session = session_id();
 	if(isset($_GET['add_cart'])){
 		
-		
-		$ip = getIp();
-		
-		$get_items = "SELECT * FROM cart WHERE ip_add='$ip' ";
+
+		$get_items = "SELECT * FROM cart WHERE session_id='$session' ";
 		
 		$run_items = mysqli_query($con, $get_items);
 		
 		$count_items = mysqli_num_rows($run_items);
 	}
 		else{
-	
-		$ip = getIp();
 		
-		$get_items = "SELECT * FROM cart WHERE ip_add='$ip' ";
+		$get_items = "SELECT * FROM cart WHERE session_id='$session' ";
 		
 		$run_items = mysqli_query($con, $get_items);
 	
@@ -103,9 +105,9 @@ function total_items(){
 		$total = 0;
 		global $con;
 		
-		$ip = getIp();
+		$session = session_id();
 		
-		$sel_price = "SELECT * FROM cart WHERE ip_add='$ip' ";
+		$sel_price = "SELECT * FROM cart WHERE session_id='$session' ";
 		
 		$run_price = mysqli_query($con, $sel_price);
 		

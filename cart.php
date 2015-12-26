@@ -4,7 +4,7 @@
 //Session variables hold information about one single user, and are available to all pages in one application, until the browser
 // has been closed.
 //this session_start() function needs to called here ( before any HTML tag )
-//session_start(); 
+
 include ("functions/functions.php"); //include the functions.php library we created
 ?>
 
@@ -93,8 +93,8 @@ include ("functions/functions.php"); //include the functions.php library we crea
 				
 				</div>
 
-			<!-- DEBUG: Print IP-->
-				<?php echo $ip=getIp(); ?>
+			<!-- DEBUG: Print session ID-->
+				<?php echo session_id(); ?>
 
 				
 				<!-- Inside this div is where the actual cart page contents are -->
@@ -115,12 +115,12 @@ include ("functions/functions.php"); //include the functions.php library we crea
 						$total = 0;
 						global $con;
 							
-						$ip = getIp();
+						$session = session_id();
 							
-						$sel_price = "SELECT * FROM cart WHERE ip_add='$ip' ";
+						$sel_price = "SELECT * FROM cart WHERE session_id='$session' ";
 						$run_price = mysqli_query($con, $sel_price);
 						
-						//we go through every item in the cart for one specific IP in this loop.
+						//we go through every item in the cart for one specific session ID in this loop.
 						while ($p_price=mysqli_fetch_array($run_price)){
 							$qty = $p_price['qty'];
 							$pro_id = $p_price['p_id'];
@@ -140,11 +140,10 @@ include ("functions/functions.php"); //include the functions.php library we crea
 							if(isset($_POST['update_cart'])){
 								$qty_row = "qty" . $pro_id; //this variable is to hold the unique name of the input box of one row.
 								$qty = $_POST[$qty_row];	//this is the new value of $qty. This needs to stay so 
-								$update_qty = "UPDATE cart SET qty='$qty' WHERE p_id='$pro_id' AND ip_add='$ip'";
+								$update_qty = "UPDATE cart SET qty='$qty' WHERE p_id='$pro_id' AND session_id='$session'";
 								$run_qty = mysqli_query($con, $update_qty);
 								}
 								
-
 							$single_total = $run_pro_price['product_price']*$qty;
 							$total += $single_total;
 						?>
@@ -180,12 +179,12 @@ include ("functions/functions.php"); //include the functions.php library we crea
 					 
 					<?php 
 					function updatecart(){
-						$ip = getip();
+						$session = session_id();
 						global $con;
 						if(isset($_POST['update_cart'])){
 							foreach($_POST['remove'] as $remove_id){
 							 
-							 $delete_product = "DELETE FROM cart WHERE p_id ='$remove_id' AND ip_add='$ip'";
+							 $delete_product = "DELETE FROM cart WHERE p_id ='$remove_id' AND session_id='$session'";
 							 $run_delete = mysqli_query($con, $delete_product);
 							 
 							 if($run_delete){
