@@ -92,7 +92,6 @@ include ("functions/functions.php"); //include the functions.php library we crea
 								
 								</div>
 							
-							
 								<div id="products_box">
 									<?php
 									//retrieves the value from $_GET Array with key 'pro_id'
@@ -121,12 +120,14 @@ include ("functions/functions.php"); //include the functions.php library we crea
 														
 														<h3> $pro_title </h3>
 														<img src='admin_area/product_images/$pro_image' width='400' height='300' />
+														
 														<p><b> $ $pro_price </b></p>
 														<p>$pro_desc </p>
 														
 														
 														<a href='index.php' style='float:left;'> Go Back </a>;
 														<a href='index.php?pro_id=$pro_id'><button style='float:right'>Add to Cart</button></a>
+														
 
 													</div>
 								

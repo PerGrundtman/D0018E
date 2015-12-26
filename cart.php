@@ -42,7 +42,7 @@ include ("functions/functions.php"); //include the functions.php library we crea
 				<li> <a href = "#">Contact</a> </li>  				
 			</ul>
 			<!-- search function-->
-		<!--<div id="form">
+		<!--<div id="form">	
 			<form method="get" action="results.php" enctype = "multipart/form-data">
 				<input type="text" name="user_query" placeholder="Search a Product"/>
 				<input type="submit" name="search" value="Search" />
