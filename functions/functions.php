@@ -62,8 +62,8 @@ function cart(){
 		}
 		//Else...
 		else{
-			
-			$insert_pro = "INSERT into cart (p_id, session_id) values ('$pro_id', '$session') ";
+			$initial_qty = 1;
+			$insert_pro = "INSERT into cart (p_id, session_id, qty) values ('$pro_id', '$session', '$initial_qty') ";
 			
 			$run_pro = mysqli_query($con, $insert_pro);
 			
@@ -72,7 +72,7 @@ function cart(){
 	}
 
 }
-//getting tjhe total added items
+//getting the total added items
 
 //TODO: check if/else
 function total_items(){
