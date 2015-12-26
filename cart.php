@@ -4,7 +4,7 @@
 //Session variables hold information about one single user, and are available to all pages in one application, until the browser
 // has been closed.
 //this session_start() function needs to called here ( before any HTML tag )
-session_start(); 
+//session_start(); 
 include ("functions/functions.php"); //include the functions.php library we created
 ?>
 
@@ -92,11 +92,14 @@ include ("functions/functions.php"); //include the functions.php library we crea
 					</span>
 				
 				</div>
-			
-				<?php echo $ip=getIp(); ?>	<!-- DEBUG: Print IP-->
-			
-				<div id="products_box">
+
+			<!-- DEBUG: Print IP-->
+				<?php echo $ip=getIp(); ?>
+
 				
+				<!-- Inside this div is where the actual cart page contents are -->
+				<div id="products_box">
+
 					<form action="" method="post" enctype="multipart/form-data">
 					
 						<table align="center" width="700" bgcolor="skyblue">
@@ -109,59 +112,62 @@ include ("functions/functions.php"); //include the functions.php library we crea
 						</tr>
 						
 						<?php
-							$total = 0;
-							global $con;
+						$total = 0;
+						global $con;
 							
-							$ip = getIp();
+						$ip = getIp();
 							
-							$sel_price = "SELECT * FROM cart WHERE ip_add='$ip' ";
-							
-							$run_price = mysqli_query($con, $sel_price);
-							
-							while ($p_price=mysqli_fetch_array($run_price)){
-								$pro_id = $p_price['p_id'];
-								$pro_price = "SELECT * FROM products WHERE product_id='$pro_id'";
-								$run_pro_price = mysqli_query($con, $pro_price);
-								
-								while ($pp_price = mysqli_fetch_array($run_pro_price)){
-									$product_price = array($pp_price['product_price']);
-									$product_title = $pp_price['product_title'];
-									$product_image = $pp_price['product_image'];
-									$single_price = $pp_price['product_price'];
-									$values = array_sum($product_price);
-									$total += $values;
+						$sel_price = "SELECT * FROM cart WHERE ip_add='$ip' ";
+						$run_price = mysqli_query($con, $sel_price);
 						
+						//we go through every item in the cart for one specific IP in this loop.
+						while ($p_price=mysqli_fetch_array($run_price)){
+							$qty = $p_price['qty'];
+							$pro_id = $p_price['p_id'];
+						
+
+							//Fetch information about that one product in our cart from product table instead.
+							$pro_price = "SELECT * FROM products WHERE product_id='$pro_id'";
+							$run_pro_price = mysqli_query($con, $pro_price);
+							$run_pro_price = mysqli_fetch_array($run_pro_price);
+
+							
+							$product_price = $run_pro_price['product_price'];
+							$product_title = $run_pro_price['product_title'];
+							$product_image = $run_pro_price['product_image'];
+							
+							//code below is run when "update_cart" button is clicked. It sends the new values of quantity values in CART table to the database.
+							if(isset($_POST['update_cart'])){
+								$qty_row = "qty" . $pro_id; //this variable is to hold the unique name of the input box of one row.
+								$qty = $_POST[$qty_row];	//this is the new value of $qty. This needs to stay so 
+								$update_qty = "UPDATE cart SET qty='$qty' WHERE p_id='$pro_id' AND ip_add='$ip'";
+								$run_qty = mysqli_query($con, $update_qty);
+								}
+								
+
+							$single_total = $run_pro_price['product_price']*$qty;
+							$total += $single_total;
 						?>
 						
-						<tr align="center">	
-							<td><input type="checkbox" name="remove[]" value="<?php echo $pro_id; ?>"/></td>
-							<td><?php echo $product_title; ?><br>
-							<img src="admin_area/product_images/<?php echo $product_image;?>" width="60" height="60"/>
+							<!-- This section gives each entry in cart its own checkbox, unique image, quantity box etc. -->
+							<tr align="center">
+								<td><input type="checkbox" name="remove[]" value="<?php echo $pro_id; ?>"/></td>
+								<td><?php echo $product_title; ?><br>
+									<img src="admin_area/product_images/<?php echo $product_image;?>" width="60" height="60"/></td>
 
-							</td>
-							<td> <input type="text" size="4" name="qty" value="<?php echo $_SESSION['qty']; ?>"/></td>
+								<!-- The input code below provides unique names for each "quantity" box.-->
+								<td> <input type="text" size="4" name="<?php echo "qty" . $pro_id?>" value="<?php echo $qty; ?>"/></td>		
+								<td> <?php echo "$" . $single_total ?></td>
+							</tr>
 							
 							<?php 
-							if(isset($_POST['update_cart'])){
-								$qty = $_POST['qty'];
-								$total = $total* $qty;
-								$update_qty = "UPDATE cart SET qty='$qty'";
-								$run_qty = mysqli_query($con, $update_qty);
-								
-								$_SESSION['qty'] = $qty;  
-							}
-							?>
-							
-							<td> <?php echo "$" . $single_price ?></td>
-						</tr>
-						 
-							<?php 
-								}
+							//close the while loop above.
 							} 
 							?>
+							
 							<tr align="right">
-							<td colspan="4"> <b>Sub Total: </b></td>
-							<td> <?php echo "$" . $total; ?> </td>
+								<td colspan="4"> <b>Sub Total: </b></td>
+								<td> <?php echo "$" . $total; ?> </td>
 						</tr>
 							
 							<tr align="center">
