@@ -36,18 +36,19 @@ include ("functions/functions.php"); //include the functions.php library we crea
 				<!-- List Item -->
 				<li> <a href = "index.php">Home</a> </li>  
 				<li> <a href = "all_products.php">All Products</a> </li>  
-				<li> <a href = "customer/my_account.php">My Account</a> </li>  
+				<li> <a href = "customer/my_account.php">My Account</a> </li>  <!--TODO: my_account.php page  -->
 				<li> <a href = "#">Sign Up</a> </li>  
 				<li> <a href = "cart.php">Shopping Cart</a> </li>
 				<li> <a href = "#">Contact</a> </li>  				
 			</ul>
-		<div id="form">
+			<!-- search function-->
+		<!--<div id="form">
 			<form method="get" action="results.php" enctype = "multipart/form-data">
 				<input type="text" name="user_query" placeholder="Search a Product"/>
 				<input type="submit" name="search" value="Search" />
 			</form>
 		</div>
-		
+		-->
 		</div>
 		<!--Navigation bar ENDS here -->
 		
@@ -66,9 +67,7 @@ include ("functions/functions.php"); //include the functions.php library we crea
 						getCats();
 					
 					?>
-					
-					
-					
+					 
 				</ul>
 				
 			<div id="sidebar_title">Brands</div>
@@ -93,15 +92,14 @@ include ("functions/functions.php"); //include the functions.php library we crea
 					</span>
 				
 				</div>
-			<!-- DEBUG: Print IP-->
-				<?php echo $ip=getIp(); ?>
+			
+				<?php echo $ip=getIp(); ?>	<!-- DEBUG: Print IP-->
 			
 				<div id="products_box">
 				
 					<form action="" method="post" enctype="multipart/form-data">
 					
 						<table align="center" width="700" bgcolor="skyblue">
-					
 						
 						<tr align="center">
 							<th> Remove </th>
@@ -135,7 +133,7 @@ include ("functions/functions.php"); //include the functions.php library we crea
 						
 						?>
 						
-						<tr align="center">
+						<tr align="center">	
 							<td><input type="checkbox" name="remove[]" value="<?php echo $pro_id; ?>"/></td>
 							<td><?php echo $product_title; ?><br>
 							<img src="admin_area/product_images/<?php echo $product_image;?>" width="60" height="60"/>
@@ -150,18 +148,13 @@ include ("functions/functions.php"); //include the functions.php library we crea
 								$update_qty = "UPDATE cart SET qty='$qty'";
 								$run_qty = mysqli_query($con, $update_qty);
 								
-								$_SESSION['qty'] = $qty; 
-								
-								
+								$_SESSION['qty'] = $qty;  
 							}
 							?>
 							
 							<td> <?php echo "$" . $single_price ?></td>
 						</tr>
-						
-						
-						
-						
+						 
 							<?php 
 								}
 							} 
@@ -175,12 +168,10 @@ include ("functions/functions.php"); //include the functions.php library we crea
 								<td colspan="2"> <input type="submit" name="update_cart" value="Update Cart"/></td>
 								<td> <input type="submit" name="continue" value="Continue"</td>
 								<td> <button><a href="checkout.php" style="text-decoration:none; color: black;"> Checkout </a></button></td>
-							</tr>
-							
+							</tr> 
 						</table>
 					</form>
-					
-					
+					 
 					<?php 
 					function updatecart(){
 						$ip = getip();
@@ -209,8 +200,7 @@ include ("functions/functions.php"); //include the functions.php library we crea
 			</div>
 		</div>
 		<!-- Content wrapper ENDS here -->
-		
-		
+		 
 		<div id="footer" >
 		
 		<h2 style="text-align:center; padding-top: 30px;">&copy; 2015 by Per & Tobbe</h2>

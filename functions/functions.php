@@ -293,13 +293,10 @@ function getCatPro(){
 				<a href='index.php?pro_id=$pro_id'><button style='float:right'>Add to Cart</button></a>
 
 			</div>
-			
-			
-			
-		";
+			 
+			";
+		} 
 	}
-
-}
 }
 
 function getBrandPro(){
@@ -339,13 +336,10 @@ function getBrandPro(){
 		$pro_price = $row_brand_pro['product_price'];
 		$pro_image = $row_brand_pro['product_image'];
 		
-
-		
-		
-		
+ 
 		// details.php?. '?' makes it a URL link or GET request
 		// Makes a dynamic link for each product
-		// TODO: make a button for 'Details'
+		
 		echo "
 			<div id='single_product'>
 				
