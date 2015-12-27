@@ -1,4 +1,5 @@
 <?php
+/*
 $host="utbweb.its.ltu.se";
 $port=3306;
 $socket="";
@@ -8,7 +9,10 @@ $dbname="pergru0db";
 
 $con = new mysqli($host, $user, $password, $dbname, $port, $socket)
 	or die ('Could not connect to the database server' . mysqli_connect_error());
-
+	
+	*/
+	
+include ("admin_area/includes/db.php"); // instead of above code
 //$con->close();
 //TODO: Try if the $con can be made global ONLY ONCE instead of in each function
 
@@ -198,7 +202,7 @@ function getPro(){
 	global $con;
 	
 	//get the products from our DB and print them on the page dynamically
-	$get_pro = "select * from products order by RAND() LIMIT 0,6";
+	$get_pro = "select * from products order by RAND() LIMIT 0,6"; //TODO remove the limit so we can remove the "all products "-page ?
 	
 	
 	$run_pro = mysqli_query($con, $get_pro);

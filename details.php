@@ -2,6 +2,7 @@
 
 <?php
 include ("functions/functions.php"); //include the functions.php library we created
+include ("admin_area/includes/db.php");
 ?>
 
 
@@ -97,7 +98,7 @@ include ("functions/functions.php"); //include the functions.php library we crea
 									//retrieves the value from $_GET Array with key 'pro_id'
 									if(isset($_GET['pro_id'])) {
 									
-										$product_id =$_GET['pro_id'];
+										echo "article " . $product_id =(int)$_GET['pro_id']; //cast to int for security reasons for sql injection attacks
 										//get the products from our DB and print them on the page dynamically
 										$get_pro = "SELECT * FROM products WHERE product_id='$product_id'";
 					
@@ -133,9 +134,48 @@ include ("functions/functions.php"); //include the functions.php library we crea
 								
 														
 													";
+													?>
+														<!-- LEFT JOIN because products always exists, but not always the rating for a products, so we join from LEFT -->
+													<?php 
+													
+													
+													
+											$query = $con->query("
+												SELECT products.product_id, products.product_title, AVG(products_ratings.rating) AS rating
+												FROM products
+												LEFT JOIN products_ratings
+												ON products.product_id = products_ratings.product_id
+												WHERE products.product_id = '$pro_id'
+												GROUP BY products.product_id
+											");
+											while($row = $query->fetch_object()){
+												$articles[] = $row;
+											}
+											
+											
+											?>
+											<?php foreach($articles as $article): ?>
+											
+													<div class="article-rating">Rating <?php echo $article->rating ?>/5</div>
+												<?php endforeach; ?>
+											<div class="article-rate">
+											
+											
+											
+												<h3>Rate this article:</h3>
+												<!--   create 5 links to a vote-function page, which will redirect you back to the details page of this product   -->
+												<?php foreach(range(1,5) as $rating): ?>
+													<a href="rate.php?article=<?php echo $pro_id; ?>&rating=<?php echo $rating; ?>"> <?php echo $rating ?> </a>
+												<?php endforeach; ?>
+												
+												<?php
 												}
 											}
 											?>
+										
+											
+											
+											</div>
 									</div>
 									
 								</div>

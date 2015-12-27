@@ -125,12 +125,10 @@ include ("functions/functions.php"); //include the functions.php library we crea
 							$qty = $p_price['qty'];
 							$pro_id = $p_price['p_id'];
 						
-
 							//Fetch information about that one product in our cart from product table instead.
 							$pro_price = "SELECT * FROM products WHERE product_id='$pro_id'";
 							$run_pro_price = mysqli_query($con, $pro_price);
 							$run_pro_price = mysqli_fetch_array($run_pro_price);
-
 							
 							$product_price = $run_pro_price['product_price'];
 							$product_title = $run_pro_price['product_title'];
