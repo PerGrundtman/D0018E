@@ -12,7 +12,5 @@ include ("admin_area/includes/db.php");
 			$con->query("INSERT INTO products_ratings (product_id, rating) VALUES ({$product_id}, {$rating})");
 		}
 	}
-
-	
 	header('Location: details.php?pro_id=' . $product_id);
 ?>
