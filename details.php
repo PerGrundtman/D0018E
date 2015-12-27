@@ -152,16 +152,14 @@ include ("admin_area/includes/db.php");
 												
 												echo "<br><br> <h3> Please add a comment </h3>"
 												
-												
 												?>
 												<form action="post_comment.php?product=<?php echo $pro_id ?>" method="POST">
 													<input type="text" name="name" value="Your name">
 													<textarea name="comment" cols="25" rows="2">Enter a comment</textarea><p>
 													<input type="submit" value="Comment" >
-													
 												</form>
 												<?php 
-													$find_comments = mysqli_query($con, "SELECT * FROM comments WHERE id='$pro_id'");
+													$find_comments = mysqli_query($con, "SELECT * FROM comments WHERE product_id='$pro_id'");
 													while ($row = mysqli_fetch_assoc($find_comments)){
 														$comment_name = $row['name'];
 														$comment = $row['comment'];
