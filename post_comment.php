@@ -12,7 +12,7 @@ if($comment_length>100){
 	header("location: details.php?pro_id=" . $id . "&error=1");
 } else {
 	 //mysqli_query($con, "INSERT INTO comments(id, name, comment) VALUES({$id}, {$name}, {$comment} )");
-	$con->query("INSERT INTO comments(product_id, name, comment) VALUES ({$id}, {$name}, {$comment})");
+	$con->query("INSERT INTO comments(product_id, name, comment) VALUES ('$id', '$name', '$comment')");
 	
 	//debug
 	echo "product id: $id <p>";
