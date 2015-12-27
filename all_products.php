@@ -78,6 +78,7 @@ include ("functions/functions.php"); //include the functions.php library we crea
 		
 			<div id="content_area" >
 			
+			
 				<div id="shopping_cart"> 
 					
 					<span style="float:right; font-size:18px; padding: 5px; line-height: 40px;">

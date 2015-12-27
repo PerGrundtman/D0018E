@@ -42,7 +42,7 @@ include ("functions/functions.php"); //include the functions.php library we crea
 				<li> <a href = "#">Contact</a> </li>  				
 			</ul>
 			<!-- search function-->
-		<!--<div id="form">
+		<!--<div id="form">	
 			<form method="get" action="results.php" enctype = "multipart/form-data">
 				<input type="text" name="user_query" placeholder="Search a Product"/>
 				<input type="submit" name="search" value="Search" />
@@ -125,12 +125,10 @@ include ("functions/functions.php"); //include the functions.php library we crea
 							$qty = $p_price['qty'];
 							$pro_id = $p_price['p_id'];
 						
-
 							//Fetch information about that one product in our cart from product table instead.
 							$pro_price = "SELECT * FROM products WHERE product_id='$pro_id'";
 							$run_pro_price = mysqli_query($con, $pro_price);
 							$run_pro_price = mysqli_fetch_array($run_pro_price);
-
 							
 							$product_price = $run_pro_price['product_price'];
 							$product_title = $run_pro_price['product_title'];
