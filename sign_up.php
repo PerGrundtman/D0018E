@@ -33,11 +33,17 @@ include ("functions/functions.php"); //include the functions.php library we crea
 				<li> <a href = "index.php">Home</a> </li>  
 				<li> <a href = "all_products.php">All Products</a> </li>  
 				<li> <a href = "customer/my_account.php">My Account</a> </li>  
-				<li> <a href = "sign_up.php">Sign Up</a> </li> 
+				<li> <a href = "sign_up.php">Sign Up</a> </li>  
 				<li> <a href = "cart.php">Shopping Cart</a> </li>
 				<li> <a href = "#">Contact</a> </li>  				
 			</ul>
-
+			<!-- search functionality ... -->
+		<!--<div id="form">
+			<form method="get" action="results.php" enctype = "multipart/form-data">
+				<input type="text" name="user_query" placeholder="Search a Product"/>
+				<input type="submit" name="search" value="Search" />
+			</form>
+		</div>-->
 		
 		</div>
 		<!--Navigation bar ENDS here -->
@@ -73,8 +79,6 @@ include ("functions/functions.php"); //include the functions.php library we crea
 		
 			<div id="content_area" >
 			
-			<?php cart(); ?>
-			
 				<div id="shopping_cart"> 
 					
 					<span style="float:right; font-size:18px; padding: 5px; line-height: 40px;">
@@ -88,9 +92,17 @@ include ("functions/functions.php"); //include the functions.php library we crea
 				<?php echo $ip=getIp(); ?>
 			
 				<div id="products_box">
-					<?php getPro(); ?>
-					<?php getCatPro(); ?>
-					<?php getBrandPro(); ?>
+					<!-- here's where the sign-up contents are -->
+					<form action="" method = "post" enctype="multipart/form-data">
+						<table align="center" width="700" bgcolor="skyblue" border="2">
+							<tr>Sign up for online shopping</tr>
+								<td align="right">E-mail adress:</td> 
+								<td><input type="text" name="e_mail" size="30" required/></td>
+							<tr></tr>
+								<td align="right">First name</td>
+								<td>oere</td>
+						</table>
+					</form>
 				</div>
 				
 			</div>

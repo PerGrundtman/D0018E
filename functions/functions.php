@@ -16,7 +16,7 @@ include ("admin_area/includes/db.php"); // instead of above code
 //$con->close();
 //TODO: Try if the $con can be made global ONLY ONCE instead of in each function
 
-//Start a new session here if a session has not been started yet.
+//Start a new session here, if a session has not been started yet.
 if(!isset($_SESSION)){
 	session_start();
 }
@@ -66,8 +66,8 @@ function cart(){
 		}
 		//Else...
 		else{
-			
-			$insert_pro = "INSERT into cart (p_id, session_id) values ('$pro_id', '$session') ";
+			$initial_qty = 1;
+			$insert_pro = "INSERT into cart (p_id, session_id, qty) values ('$pro_id', '$session', '$initial_qty') ";
 			
 			$run_pro = mysqli_query($con, $insert_pro);
 			
