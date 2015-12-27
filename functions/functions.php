@@ -12,7 +12,7 @@ $con = new mysqli($host, $user, $password, $dbname, $port, $socket)
 //$con->close();
 //TODO: Try if the $con can be made global ONLY ONCE instead of in each function
 
-//Start a new session here if a session has not been started yet.
+//Start a new session here, if a session has not been started yet.
 if(!isset($_SESSION)){
 	session_start();
 }
@@ -72,7 +72,7 @@ function cart(){
 	}
 
 }
-//getting the total added items
+//getting tjhe total added items
 
 //TODO: check if/else
 function total_items(){
