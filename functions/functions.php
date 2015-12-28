@@ -367,4 +367,44 @@ function getBrandPro(){
 }
 }
 
+//function to determine if a login should be successful or not
+function login(){
+	//if the login button is clicked
+	if(isset($_POST['login_button'])){
+		//if(empty($_POST['username']))
+		/* {
+			$this->HandleError("UserName is empty!");
+			return false;
+		}
+		 
+		if(empty($_POST['password']))
+		{
+			$this->HandleError("Password is empty!");
+			return false;
+		} */
+		$email = trim($_POST['login_mail']);	//trim() strips the input from whitespace.
+		$password = trim($_POST['login_password']);
+		 
+		if(!$this->CheckLoginInDB($email,$password)){
+			return false;
+		}
+		session_start();
+		
+		$_SESSION[$this->GetLoginSessionVar()] = $email;
+		 
+		return true;
+		}
+}
+
+//check if a user has entered a correct email and password combination which lies in the database		
+function CheckLoginInDB($email, $password){
+	$sql = "SELECT customer_email, customer_password FROM customer WHERE customer_email = '$email' AND customer_password = '$password'";
+	$result = mysqli_query($con, $sql);	
+	//if the email and password combination matches that of one in the database we have a match
+	if (mysqli_num_rows($result) == 1){
+		return true;
+	}
+	return false;
+}	
+
 ?>
