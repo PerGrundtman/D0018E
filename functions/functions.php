@@ -371,6 +371,7 @@ function getBrandPro(){
 function login(){
 	//if the login button is clicked
 	if(isset($_POST['login_button'])){
+
 		//if(empty($_POST['username']))
 		/* {
 			$this->HandleError("UserName is empty!");
@@ -385,19 +386,32 @@ function login(){
 		$email = trim($_POST['login_mail']);	//trim() strips the input from whitespace.
 		$password = trim($_POST['login_password']);
 		 
-		if(!$this->CheckLoginInDB($email,$password)){
-			return false;
+		if(!CheckLoginInDB($email,$password)){
+			return;
 		}
-		session_start();
 		
-		$_SESSION[$this->GetLoginSessionVar()] = $email;
-		 
-		return true;
+		//If session is started already, kill it and create a new one
+		 if(isset($_SESSION)) {
+			session_destroy();
+			session_start();
+			echo "<script> window.open('index.php', '_self')</script>";
+		} 
+		
+		//$_SESSION[GetLoginSessionVar()] = $email;
+		$_SESSION['email'] = $email;
 		}
+	if(isset($_POST['logout_button'])){
+		if(isset($_SESSION)) {
+			session_destroy();
+			echo "<script> window.open('index.php', '_self')</script>";
+		} 
+	}
+	
 }
 
 //check if a user has entered a correct email and password combination which lies in the database		
-function CheckLoginInDB($email, $password){
+function checkLoginInDB($email, $password){
+	global $con;
 	$sql = "SELECT customer_email, customer_password FROM customer WHERE customer_email = '$email' AND customer_password = '$password'";
 	$result = mysqli_query($con, $sql);	
 	//if the email and password combination matches that of one in the database we have a match
@@ -407,4 +421,58 @@ function CheckLoginInDB($email, $password){
 	return false;
 }	
 
+//check if a user is logged in or not
+function checkLogin()
+{
+     //session_start();
+ 
+     $sessionvar = session_id();
+      
+     if(empty($_SESSION['email']))
+     {
+        return false;
+     }
+     return true;
+}
+
+//fetch first name from email adress in database.
+function getFirstNameFromEmail($email){
+	global $con;
+	$fname = "";
+	$sql = "SELECT customer_fname FROM customer WHERE customer_email = '$email'";
+	$result = mysqli_query($con, $sql);
+	//if the query was successful:
+	if (mysqli_num_rows($result) == 1){
+		$row = mysqli_fetch_assoc($result);
+		return $row['customer_fname'];
+	}
+	return "";
+}
+
+//Paints a login fields if user is not logged in and a logout button if user is logged in
+function paintLoginOptions($UserLoggedIn){
+	if (!$UserLoggedIn){
+		echo "
+			<div id='login'>
+				<form id='login' action='index.php' method='post' accept-charset='UTF-8'>
+					<label for='login_mail'><b>E-mail:</b></label>
+					<input type='text' name='login_mail' size = '4' required/>
+					<label for='login_password'><b>Password:</b></label>
+					<input type='password' name='login_password' size = '4' required/>
+					<input type='submit' name='login_button' value='Log in'>
+				</form>
+			</div>
+		";
+	}
+	else {
+		echo "
+			<div id='logout'>
+				<form id='login' action='index.php' method='post' accept-charset='UTF-8'>
+					<input type='submit' name='logout_button' value='Log out'>
+				</form>
+			</div>
+		";
+	}
+
+}
 ?>

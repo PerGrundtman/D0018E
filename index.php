@@ -1,6 +1,14 @@
 <!DOCTYPE>
 <?php
 include ("functions/functions.php"); //include the functions.php library we created
+$UserLoggedIn = checkLogin(); //boolean variable
+$UserName = "Guest";
+$UserEmail = "";
+if ($UserLoggedIn) {
+	$UserEmail = $_SESSION['email'];
+	$UserName = getFirstNameFromEmail($UserEmail);
+	}
+	
 ?>
 <html>
 	<head>
@@ -25,18 +33,10 @@ include ("functions/functions.php"); //include the functions.php library we crea
 				<li> <a href = "customer/my_account.php">My Account</a> </li>  
 				<li> <a href = "sign_up.php">Sign Up</a> </li>
 				<li> <a href = "cart.php">Shopping Cart</a> </li>
-				<li> <a href = "#">Contact</a> </li>  					
+				<li> <a href = "#">Contact</a> </li>  						
 			</ul>
 			<!-- This is the login screen on the menubar-->
-			<div id="login">
-				<form id='login' action='login.php' method='post' accept-charset='UTF-8'>
-					<label for="login_mail"><b>E-mail:</b></label>
-					<input type="text" name="login_mail" size = "4" required/>
-					<label for="login_password"><b>Password:</b></label>
-					<input type="password" name="login_password" size = "4" required/>
-					<input type="submit" name="login_button" value="Log in">
-				</form>
-			</div>
+			<?php paintLoginOptions($UserLoggedIn) ?>
 		</div>
 		<!--Navigation bar ENDS here -->
 	
@@ -60,10 +60,11 @@ include ("functions/functions.php"); //include the functions.php library we crea
 			<!-- Content area starts here.  -->
 			<div id="content_area" >
 				<?php cart(); ?>
+				<?php login();	?>
 				<!-- This is the bar showing nr items and total price with cart. -->
 				<div id="shopping_cart"> 
 					<span style="float:right; font-size:18px; padding: 5px; line-height: 40px;">
-					Welcome guest! <b style="color: yellow">Shopping Cart - </b> Total Items: <?php total_items(); ?> Total Price: <?php total_price(); ?> <a href="cart.php" style="color:yellow">Go to cart</a>
+					Welcome <?php echo $UserName; ?>! <b style="color: yellow">Shopping Cart - </b> Total Items: <?php total_items(); ?> Total Price: <?php total_price(); ?> <a href="cart.php" style="color:yellow">Go to cart</a>
 					</span>
 				</div>
 				<!-- This is where specific ecommerce data is shown. -->

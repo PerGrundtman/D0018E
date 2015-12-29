@@ -98,9 +98,14 @@ font-weight: bolder;
 	padding-right: 10px;
 	line-height: 45px;
 }
-#login input{
-	
+
+#logout{
+	float: right;
+	padding-right: 10px;
+	line-height: 45px;
+	padding-top:13px;
 }
+
 .content_wrapper{
 	width: 1000px;
 	

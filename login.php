@@ -4,31 +4,23 @@
 include ("functions/functions.php"); //include the functions.php library we created
 include ("admin_area/includes/db.php");
 ?>
-
-
 <html>
 	<head>
 		<title> Ripped like Van Damme </title>
-		
-		
 		<link rel = "stylesheet" href = "styles/style.css" media = "all"/>
 	</head>
 <body>
 	<!-- Main Container starts here -->
 	<div class ="main_wrapper">
-	
 		<!-- Header starts here -->
 		<div class = "header_wrapper" > 
-		
 			<img width="267px" src="images/vandamme1.gif" />
 			<img width="200px" src="images/vandamme2.gif" />
-
 		</div>
 		<!-- Header ends here -->
 		
 		<!-- Navigation Bar starts here -->
 		<div class = "menubar"> 
-			
 			<ul id="menu">     <!-- unordered list -->
 				<!-- List Item -->
 				<li> <a href = "index.php">Home</a> </li> 				
@@ -37,6 +29,7 @@ include ("admin_area/includes/db.php");
 				<li> <a href = "cart.php">Shopping Cart</a> </li>
 				<li> <a href = "#">Contact</a> </li>  					
 			</ul>
+			<!-- This is the login screen on the menubar-->
 			<div id="login">
 				<form id='login' action='login.php' method='post' accept-charset='UTF-8'>
 					<label for="login_mail"><b>E-mail:</b></label>
@@ -46,48 +39,28 @@ include ("admin_area/includes/db.php");
 					<input type="submit" name="login_button" value="Log in">
 				</form>
 			</div>
-			<!-- search functionality ... -->
-		<!--<div id="form">
-			<form method="get" action="results.php" enctype = "multipart/form-data">
-				<input type="text" name="user_query" placeholder="Search a Product"/>
-				<input type="submit" name="search" value="Search" />
-			</form>
-		</div>-->
-		
 		</div>
 		<!--Navigation bar ENDS here -->
-		
-		
+	
 		<!-- Content wrapper starts here -->
 		<div class = "content_wrapper">
-		
-		
+			<!-- Sidebar starts here -->
 			<div id="sidebar" >
 				<div id="sidebar_title">Categories</div>
-				
 				<ul id="cats">
-				
 					<?php
-					
-						getCats();
-					
+					getCats();	
 					?>
-					
-					
-					
 				</ul>
-				
-			<div id="sidebar_title">Brands</div>
-				
-				<ul id="cats">
+				<div id="sidebar_title">Brands</div>
+					<ul id="cats">
 					<?php getBrands(); ?>
-					
-				</ul>
-				
-			</div>
-		
-			<div id="content_area" >
+					</ul>
+				</div>
+			<!--Sidebar ends here-->
 			
+			<!-- Content area starts here -->
+			<div id="content_area" >
 				<div id="shopping_cart"> 
 					
 					<span style="float:right; font-size:18px; padding: 5px; line-height: 40px;">
