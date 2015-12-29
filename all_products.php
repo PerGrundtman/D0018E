@@ -69,7 +69,7 @@ if ($UserLoggedIn) {
 				</div>
 				<!-- This is where specific ecommerce data is shown. -->
 				<div id="products_box">
-				<?php
+			<?php
 				$get_pro = "select * from products";
 				$run_pro = mysqli_query($con, $get_pro);
 				
@@ -83,32 +83,21 @@ if ($UserLoggedIn) {
 					$pro_title = $row_pro['product_title'];
 					$pro_price = $row_pro['product_price'];
 					$pro_image = $row_pro['product_image'];
-					
-					
-					// details.php?. '?' makes it a URL link or GET request
-					// Makes a dynamic link for each product
-					// TODO: make a button for 'Details'
+					 
 					echo "
-						<div id='single_product'>
-							
+						<div id='single_product'> 
 							<h3> $pro_title </h3>
 							<img src='admin_area/product_images/$pro_image' width='180' height='180' />
-							<p><b> $ $pro_price </b></p>
-							
-							
+							<p><b> $ $pro_price </b></p> 
 							<a href='details.php?pro_id=$pro_id' style='float:left;'> Details </a>
 							<a href='index.php?pro_id=$pro_id'><button style='float:right'>Add to Cart</button></a>
 
-						</div>
-						
-						
+						</div> 
 					";
 				}
-	?>
-				</div>
-				
-			</div>
-		
+			?>
+				</div> 
+			</div> 
 		</div>
 		<!-- Content wrapper ENDS here -->
 		

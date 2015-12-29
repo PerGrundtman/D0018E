@@ -50,11 +50,11 @@ if ($UserLoggedIn) {
 					getCats();	
 					?>
 				</ul>
-				<div id="sidebar_title">Brands</div>
-					<ul id="cats">
-					<?php getBrands(); ?>
-					</ul>
-				</div>
+			<div id="sidebar_title">Brands</div>
+				<ul id="cats">
+				<?php getBrands(); ?>
+				</ul>
+			</div>
 			<!--Sidebar ends here-->
 			
 			<!-- Content area starts here.  -->
@@ -79,7 +79,7 @@ if ($UserLoggedIn) {
 							<th> Total price</th>
 						</tr>
 						
-						<?php
+				<?php
 						$total = 0;
 						global $con;
 							
@@ -102,6 +102,8 @@ if ($UserLoggedIn) {
 							$product_title = $run_pro_price['product_title'];
 							$product_image = $run_pro_price['product_image'];
 							
+							$product_quantity = $run_pro_price['quantity'];
+							
 							//code below is run when "update_cart" button is clicked. It sends the new values of quantity values in CART table to the database.
 							if(isset($_POST['update_cart'])){
 								$qty_row = "qty" . $pro_id; //this variable is to hold the unique name of the input box of one row.
@@ -110,9 +112,22 @@ if ($UserLoggedIn) {
 								$run_qty = mysqli_query($con, $update_qty);
 								}
 								
+							if(isset($_POST['checkout'])){
+								$qty_row = "qty" . $pro_id; 
+								$qty_co = $_POST[$qty_row];
+								//decrement item-stock quantity in our DB with given quantity value '$qty_co', IFF this doesn't lead to the in-stock counter going below 0.
+								// However, if the in-stock-counter does go below 0, then it doesn't decrement at all
+								$con->query("
+									UPDATE products
+									SET quantity = GREATEST(0, quantity-$qty_co)
+									WHERE product_id = $pro_id
+								");
+								
+							}
+								
 							$single_total = $run_pro_price['product_price']*$qty;
 							$total += $single_total;
-						?>
+				?>
 						
 							<!-- This section gives each entry in cart its own checkbox, unique image, quantity box etc. -->
 							<tr align="center">
@@ -133,12 +148,13 @@ if ($UserLoggedIn) {
 							<tr align="right">
 								<td colspan="4"> <b>Sub Total: </b></td>
 								<td> <?php echo "$" . $total; ?> </td>
-						</tr>
+							</tr>
 							
 							<tr align="center">
 								<td colspan="2"> <input type="submit" name="update_cart" value="Update Cart"/></td>
 								<td> <input type="submit" name="continue" value="Continue"</td>
-								<td> <button><a href="checkout.php" style="text-decoration:none; color: black;"> Checkout </a></button></td>
+								<!--<td> <button><a href="checkout.php" style="text-decoration:none; color: black;"> Checkout </a></button></td>-->
+								<td> <input type="submit" name="checkout" value="Checkout"</td> 
 							</tr> 
 						</table>
 					</form>
@@ -149,8 +165,8 @@ if ($UserLoggedIn) {
 						global $con;
 						if(isset($_POST['update_cart'])){
 							foreach($_POST['remove'] as $remove_id){
-							 $delete_product = "DELETE FROM cart WHERE p_id ='$remove_id' AND session_id='$session'";
-							 $run_delete = mysqli_query($con, $delete_product);
+								$delete_product = "DELETE FROM cart WHERE p_id ='$remove_id' AND session_id='$session'";
+								$run_delete = mysqli_query($con, $delete_product);
 					
 							 if($run_delete){
 								 //refresh the page
