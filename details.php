@@ -51,32 +51,30 @@ include ("admin_area/includes/db.php");
 					getCats();	
 					?>
 				</ul>
-				<div id="sidebar_title">Brands</div>
-					<ul id="cats">
-					<?php getBrands(); ?>
-					</ul>
-				</div>
+		<div id="sidebar_title">Brands</div>
+			<ul id="cats">
+			<?php getBrands(); ?>
+			</ul>
+		</div>
 			<!--Sidebar ends here-->
 			
 			<!-- Content area starts here.  -->
-			<div id="content_area" >
-				<?php cart(); ?>
+		<div id="content_area" >
+			<?php cart(); ?>
 				<!-- This is the bar showing nr items and total price with cart. -->
 				<div id="shopping_cart"> 
 					<span style="float:right; font-size:18px; padding: 5px; line-height: 40px;">
-					Welcome guest! <b style="color: yellow">Shopping Cart - </b> Total Items: <?php total_items(); ?> Total Price: <?php total_price(); ?> <a href="cart.php" style="color:yellow">Go to cart</a>
+						Welcome guest! <b style="color: yellow">Shopping Cart - </b> Total Items: <?php total_items(); ?> Total Price: <?php total_price(); ?> <a href="cart.php" style="color:yellow">Go to cart</a>
 					</span>
 				</div>
-				<!-- This is where specific ecommerce data is shown. -->
+					<!-- This is where specific ecommerce data is shown. -->
 				<div id="products_box">
 					<?php
 					//retrieves the value from $_GET Array with key 'pro_id'
-					if(isset($_GET['pro_id'])) {
-					
+					if(isset($_GET['pro_id'])) { 
 						echo "article " . $product_id =(int)$_GET['pro_id']; //cast to int for security reasons for sql injection attacks
 						//get the products from our DB and print them on the page dynamically
-						$get_pro = "SELECT * FROM products WHERE product_id='$product_id'";
-	
+						$get_pro = "SELECT * FROM products WHERE product_id='$product_id'"; 
 						$run_pro = mysqli_query($con, $get_pro);
 	
 							// each instance of products is (one-by-one) assigned to $row_pro, and 
@@ -88,6 +86,7 @@ include ("admin_area/includes/db.php");
 								$pro_price = $row_pro['product_price'];
 								$pro_image = $row_pro['product_image'];
 								$pro_desc = $row_pro['product_desc'];
+								$pro_quantity = $row_pro['quantity'];
 								
 								// details.php?. '?' makes it a URL link or GET request
 								echo "
@@ -96,9 +95,11 @@ include ("admin_area/includes/db.php");
 										<h3> $pro_title </h3>
 										<img src='admin_area/product_images/$pro_image' width='400' height='300' />
 										
-										<p><b> $ $pro_price </b></p>
+										<p><b> Price: $ $pro_price  </b></p>
+										<p><b> Items in stock: $pro_quantity </b></p>
+										
 										<p>$pro_desc </p>
-											<a href='index.php' style='float:left;'> Go Back </a>;
+											<a href='index.php' style='float:left;'> Go Back </a>
 										<a href='index.php?pro_id=$pro_id'><button style='float:right'>Add to Cart</button></a>
 									
 									</div>
@@ -108,16 +109,21 @@ include ("admin_area/includes/db.php");
 										
 									<?php 
 									
+									
+									/*
+-----------------------------------------------PRODUCT RATING STARTS HERE ---------------------------------
+									*/
+									
 								// make a SQL query to calculate the average rating from a specific item. This average rating is saved in
 								// the 'rating' attribute which can only be retrieved through an object. So an object is created through
 								// fetch_object() which then can be manipulated to attain the desired data
-								 
 								//LEFT JOIN because products always exists, but not always the rating for a product, so we join from LEFT
-								
 								//TODO: to show the ratings immeditely in the "All products"-page, add "GROUP BY products.product_id", to the end of this query
 								// and copy it to the index.php 
 							$query = $con->query("
-								SELECT products.product_id, products.product_title, AVG(products_ratings.rating) AS rating
+								SELECT products.product_id, products.product_title, 
+								AVG(products_ratings.rating) AS rating,
+								COUNT(products_ratings.rating) AS numvotes
 								FROM products
 								LEFT JOIN products_ratings
 								ON products.product_id = products_ratings.product_id
@@ -128,27 +134,27 @@ include ("admin_area/includes/db.php");
 							}
 							
 							?>
+								<!--echoes the average rating and total number of votes for this product -->
 							<?php foreach($articles as $article): ?> 
-									<div class="article-rating">Rating <?php echo round($article->rating) ?>/5</div>
+									<div class="article-rating">Rating <?php echo round($article->rating) ?>/5 <?php echo " Out of "?><?php echo $article->numvotes . " votes"?></div>
 								<?php endforeach; ?>
-							<div class="article-rate">
 							
+							<div class="article-rate"> 
 								<h3>Rate this article:</h3>
+								
 								<!--   create 5 links to a vote-function page, which will redirect you back to the details page of this product   -->
-								<?php foreach(range(1,5) as $rating): ?>
-									<a href="rate.php?article=<?php echo $pro_id; ?>&rating=<?php echo $rating; ?>"> <?php echo $rating ?> </a>
-								<?php endforeach; ?>
+									<?php foreach(range(1,5) as $rating): ?>
+										<a href="rate.php?article=<?php echo $pro_id; ?>&rating=<?php echo $rating; ?>"> <?php echo $rating ?> </a>
+									<?php endforeach; ?>
 								
-								<?php
+								<?php echo "<br><br> <h3> Please add a comment </h3>" ?>
 								
-								echo "<br><br> <h3> Please add a comment </h3>"
-								
-								?>
 								<form action="post_comment.php?product=<?php echo $pro_id ?>" method="POST">
 									<input type="text" name="name" value="Your name">
 									<textarea name="comment" cols="25" rows="2">Enter a comment</textarea><p>
 									<input type="submit" value="Comment" >
 								</form>
+								
 								<?php 
 									$find_comments = mysqli_query($con, "SELECT * FROM comments WHERE product_id='$pro_id'");
 									while ($row = mysqli_fetch_assoc($find_comments)){
@@ -158,17 +164,19 @@ include ("admin_area/includes/db.php");
 										echo "<b>$comment_name </b> said:<i> $comment </i><p>";
 									}
 									if(isset($_GET['error'])){
-										echo "<h3><i>100 character limit, try again </i></h3>";
-										
+										echo "<h3><i>100 character limit, try again </i></h3>"; 
 									}
 
+									/*
+-----------------------------------------------PRODUCT RATING ENDS HERE ---------------------------------
+									*/
+									
 								?>
 																			
 								<?php
 								}
-							}
-					
-							?> 
+							} 
+								?> 
 							</div>
 						</div> 
 					</div> 

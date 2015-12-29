@@ -217,31 +217,19 @@ function getPro(){
 		$pro_title = $row_pro['product_title'];
 		$pro_price = $row_pro['product_price'];
 		$pro_image = $row_pro['product_image'];
-		
-		
-		
-		// details.php?. '?' makes it a URL link or GET request
-		// Makes a dynamic link for each product
-		// TODO: make a button for 'Details'
+		 
 		echo "
-			<div id='single_product'>
-				
+			<div id='single_product'> 
 				<h3> $pro_title </h3>
 				<img src='admin_area/product_images/$pro_image' width='180' height='180' />
-				<p><b> Price:  $ $pro_price </b></p>
-				
-				
-				<a href='details.php?pro_id=$pro_id' style='float:left;'> Details </a>
-				
-				<a href='index.php?add_cart=$pro_id'><button style='float:right'>Add to Cart</button></a>
-
-			</div>
-			
-			
+				<p><b> Price:  $ $pro_price </b></p> 
+				<a href='details.php?pro_id=$pro_id' style='float:left;'> Details </a> 
+				<a href='index.php?add_cart=$pro_id'><button style='float:right'>Add to Cart</button></a> 
+			</div> 
 		";
+			}
+		}
 	}
-}
-}
 }
 function getCatPro(){
 	
@@ -254,9 +242,7 @@ function getCatPro(){
 	global $con;
 	
 	//get the products from the specific cat_id from our DB and print them on the page dynamically
-	$get_cat_pro = "select * from products WHERE product_cat='$cat_id'";
-	
-	
+	$get_cat_pro = "select * from products WHERE product_cat='$cat_id'"; 
 	$run_cat_pro = mysqli_query($con, $get_cat_pro);
 	
 	//counts the total record in a query
@@ -264,8 +250,7 @@ function getCatPro(){
 	
 	if($count_cats==0){
 		
-		echo "<h2 style='padding:20px;'> No products were found in this category </h2>";
-		
+		echo "<h2 style='padding:20px;'> No products were found in this category </h2>"; 
 	}
 	
 	// each instance of products is (one-by-one) assigned to $row_pro, and 
@@ -279,27 +264,16 @@ function getCatPro(){
 		$pro_title = $row_cat_pro['product_title'];
 		$pro_price = $row_cat_pro['product_price'];
 		$pro_image = $row_cat_pro['product_image'];
-		
-
-		
-		
-		
-		// details.php?. '?' makes it a URL link or GET request
-		// Makes a dynamic link for each product
-		// TODO: make a button for 'Details'
+		 
 		echo "
 			<div id='single_product'>
 				
 				<h3> $pro_title </h3>
 				<img src='admin_area/product_images/$pro_image' width='180' height='180' />
-				<p><b> $ $pro_price </b></p>
-				
-				
+				<p><b> $ $pro_price </b></p> 
 				<a href='details.php?pro_id=$pro_id' style='float:left;'> Details </a>
-				<a href='index.php?pro_id=$pro_id'><button style='float:right'>Add to Cart</button></a>
-
-			</div>
-			 
+				<a href='index.php?pro_id=$pro_id'><button style='float:right'>Add to Cart</button></a> 
+			</div> 
 			";
 		} 
 	}
@@ -311,9 +285,8 @@ function getBrandPro(){
 	if(isset($_GET['brand'])){
 		
 		//when someone clicks the category, a dynamic URL will be created
-		$brand_id = $_GET['brand'];
-	
-	global $con;
+		$brand_id = $_GET['brand']; 
+		global $con;
 	
 	//get the products from the specific cat_id from our DB and print them on the page dynamically
 	$get_brand_pro = "select * from products WHERE product_brand='$brand_id'";
@@ -341,30 +314,18 @@ function getBrandPro(){
 		$pro_title = $row_brand_pro['product_title'];
 		$pro_price = $row_brand_pro['product_price'];
 		$pro_image = $row_brand_pro['product_image'];
-		
- 
-		// details.php?. '?' makes it a URL link or GET request
-		// Makes a dynamic link for each product
-		
+  
 		echo "
-			<div id='single_product'>
-				
+			<div id='single_product'> 
 				<h3> $pro_title </h3>
 				<img src='admin_area/product_images/$pro_image' width='180' height='180' />
-				<p><b> $ $pro_price </b></p>
-				
-				
+				<p><b> $ $pro_price </b></p> 
 				<a href='details.php?pro_id=$pro_id' style='float:left;'> Details </a>
-				<a href='index.php?pro_id=$pro_id'><button style='float:right'>Add to Cart</button></a>
-
-			</div>
-			
-			
-			
+				<a href='index.php?pro_id=$pro_id'><button style='float:right'>Add to Cart</button></a> 
+			</div> 
 		";
+		} 
 	}
-
-}
 }
 
 //function to determine if a login should be successful or not
@@ -406,5 +367,7 @@ function CheckLoginInDB($email, $password){
 	}
 	return false;
 }	
+
+
 
 ?>
