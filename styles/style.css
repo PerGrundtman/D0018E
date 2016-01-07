@@ -110,7 +110,7 @@ font-weight: bolder;
 	width: 1000px;
 	
 	margin: auto;
-	background: pink;
+	background: white;
 
 }
 
@@ -118,7 +118,7 @@ font-weight: bolder;
 	width: 800px;
 	
 	float: right;
-	background: pink;
+	background: white;
 }
 
 #sidebar{
@@ -132,7 +132,7 @@ font-weight: bolder;
 #sidebar_title{
 	background: white;
 	color: black;
-	font-size: 22px;
+	font-size: 26px;
 	font-family: arial;
 	padding: 10px;
 	text-align: center;
@@ -180,7 +180,7 @@ margin-bottom: 10px;
 
 #footer{
 	width: 1000px;
-	height: 100px;
+	height: 70px;
 	background: gray;
 	clear: both;
 }

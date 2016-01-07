@@ -79,7 +79,7 @@ if ($UserLoggedIn) {
 		
 		<!-- Footer starts here-->
 		<div id="footer" >
-			<h2 style="text-align:center; padding-top: 30px;">&copy; 2015 by Per & Tobbe</h2>
+			<h2 style="text-align:center; padding-top: 20px;">&copy; 2015 by Per & Tobbe</h2>
 		</div>
 		<!-- Footer ends here-->
 	</div>
