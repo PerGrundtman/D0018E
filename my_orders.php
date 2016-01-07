@@ -32,8 +32,7 @@ if ($UserLoggedIn) {
 				<li> <a href = "index.php">Home</a> </li> 				
 				<li> <a href = "my_orders.php">My Orders</a> </li>  
 				<li> <a href = "sign_up.php">Sign Up</a> </li>
-				<li> <a href = "cart.php">Shopping Cart</a> </li>
-				<li> <a href = "#">Contact</a> </li>  						
+				<li> <a href = "cart.php">Shopping Cart</a> </li> 						
 			</ul>
 			<!-- This is the login screen on the menubar-->
 			<?php paintLoginOptions($UserLoggedIn) ?>
@@ -72,23 +71,41 @@ if ($UserLoggedIn) {
 				<div id="products_box">
 					
 					<table align="center" width="200" bgcolor="green">
-						<tr align="center">
-							<td colspan="7"> <h3>Orders made by <?php echo $UserName ?></h3></th>
-						</tr>
-						<tr align="center">
-							<th>Order ID</th>
-							<th>Date</th>
-						</tr>
-						<tr bgcolor="yellow">
-							<td> asd </td>
-							<td> 7 jan 2015</td>
-						</tr>
-												<tr bgcolor="yellow">
-							<td> <h1>asd</h1> </td>
-						</tr>
+						
+						<?php
+						$UserLoggedIn = checkLogin();
+						
+						if (!$UserLoggedIn){
+							echo "You must log in to see your orders";
+						}
+						else{
+							?>
+							<tr align="center">
+								<td colspan="7"> <h3>Orders made by <?php echo $UserName ?></h3></th>
+							</tr>
+							<tr align="center">
+								<th>Order ID</th>
+								<th>Date</th>
+							</tr>
+							<?php
+							//go through every order of that customer and print the order id and date within <tr> and <td> tags.
+							$query = $con->query("SELECT order_id, date FROM orders WHERE customer_email = '$UserEmail'");
+							//Check that there is atleast one order done by this customer
+							if (mysqli_num_rows($query) >= 1){
+								while($row = $query->fetch_object()){
+									$orders[] = $row;
+								}
+								foreach($orders as $order): ?>
+									<tr bgcolor="yellow">
+										<td> <?php echo $order->order_id; ?> </td>
+										<td> <?php echo $order->date; ?> </td>
+									</tr>
+								<?php endforeach;
+							}
+							
+						} //end else statement above
+						?>
 					</table>
-					
-					
 				</div>
 			</div>
 		</div>

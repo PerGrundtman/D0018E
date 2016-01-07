@@ -30,10 +30,9 @@ if ($UserLoggedIn) {
 			<ul id="menu">     <!-- unordered list -->
 				<!-- List Item -->
 				<li> <a href = "index.php">Home</a> </li> 				
-				<li> <a href = "customer/my_account.php">My Account</a> </li>  
+				<li> <a href = "my_orders.php">My Orders</a> </li>  
 				<li> <a href = "sign_up.php">Sign Up</a> </li>
-				<li> <a href = "cart.php">Shopping Cart</a> </li>
-				<li> <a href = "#">Contact</a> </li>  						
+				<li> <a href = "cart.php">Shopping Cart</a> </li> 						
 			</ul>
 			<!-- This is the login screen on the menubar-->
 			<?php paintLoginOptions($UserLoggedIn) ?>
