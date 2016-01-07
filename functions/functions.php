@@ -328,6 +328,18 @@ function getBrandPro(){
 	}
 }
 
+function cartEmpty(){
+	global $con;
+	$session = session_id();
+	
+	$sql = "SELECT * FROM cart WHERE session_id = '$session'";
+	$result = mysqli_query($con, $sql);	
+	//if the session id exists in the database of atleast one entry, the cart is not empty
+	if (mysqli_num_rows($result) >= 1){
+		return false;
+	}
+	return true;
+}
 //function to determine if a login should be successful or not
 function login(){
 	//if the login button is clicked
@@ -410,7 +422,7 @@ function getFirstNameFromEmail($email){
 	return "";
 }
 
-//Paints a login fields if user is not logged in and a logout button if user is logged in
+//Paints login fields if user is not logged in and a logout button if user is logged in
 function paintLoginOptions($UserLoggedIn){
 	if (!$UserLoggedIn){
 		echo "

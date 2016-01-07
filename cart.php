@@ -111,8 +111,10 @@ if ($UserLoggedIn) {
 								$update_qty = "UPDATE cart SET qty='$qty' WHERE p_id='$pro_id' AND session_id='$session'";
 								$run_qty = mysqli_query($con, $update_qty);
 								}
-								
-							if(isset($_POST['checkout'])){
+							
+							//if checkout button is clicked and user is logged in, reduce quantity of each product.
+							$UserLoggedIn = checkLogin(); 
+							if(isset($_POST['checkout']) AND $UserLoggedIn){
 								$qty_row = "qty" . $pro_id; 
 								$qty_co = $_POST[$qty_row];
 								//decrement item-stock quantity in our DB with given quantity value '$qty_co', IFF this doesn't lead to the in-stock counter going below 0.
@@ -122,7 +124,6 @@ if ($UserLoggedIn) {
 									SET quantity = GREATEST(0, quantity-$qty_co)
 									WHERE product_id = $pro_id
 								");
-								
 							}
 								
 							$single_total = $run_pro_price['product_price']*$qty;
@@ -160,6 +161,7 @@ if ($UserLoggedIn) {
 					</form>
 					 
 					<?php 
+					//this function is meant to work together with the database on various commands found in the cart.php page.
 					function updatecart(){
 						$session = session_id();
 						global $con;
@@ -174,8 +176,39 @@ if ($UserLoggedIn) {
 								}
 							}
 						}
-					 if (isset($_POST['continue'])){
+						if (isset($_POST['continue'])){
 						 echo "<script> window.open('index.php', '_self')</script>";
+						}
+						if (isset($_POST['checkout'])){
+							$UserLoggedIn = checkLogin(); 
+							$UserEmail = $_SESSION['email'];
+							$CartEmpty = cartEmpty();
+							
+							//if the user is not logged in he or she can't make an order: throw an error message.
+							if (!$UserLoggedIn){
+								echo "You must be logged in to make an order.";
+							}
+							//if the cart is empty:
+							elseif ($CartEmpty){
+								echo "Cart is empty";
+							}
+							//if the user is logged in: 
+							else{
+								//put in the new order in orders table,
+								$con->query("INSERT INTO orders (order_id, customer_email) VALUES (NULL, '$UserEmail')");
+								//save the order_id here
+								$sql = "SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1";
+								$result = mysqli_query($con, $sql);
+								$row = mysqli_fetch_assoc($result);
+								$order_id = $row['order_id'];
+								
+								//cut the contents from cart table and insert that into the order_details table.
+								$con->query("INSERT INTO order_details (p_id, order_id, qty) SELECT * FROM cart WHERE session_id='$session' "); //order_details initially holds session_id data instead of order_id
+								$con->query("UPDATE order_details SET order_id='$order_id' WHERE order_id='$session'");			//we update that here
+								$con->query("DELETE FROM cart WHERE session_id='$session'");		//remove the old contents of THAT session from cart table
+								
+								echo "Order sent";
+							}
 						}
 					 }
 					 //@ - if the function is not called or does not work; no error is thrown
